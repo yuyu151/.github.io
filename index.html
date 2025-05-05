@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>我的第一個網頁</title>
+  <!-- 引入 QRCode.js -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 </head>
 <body>
   <h1>歡迎加入會員</h1>
   <p>請填寫以下資訊完成註冊</p>
   <img src="myimage.jpg" alt="圖片說明" width="300">
-</body>
-</html>
-  <title>註冊＋QR Code</title>
-</head>
-<body>
+
   <h2>註冊</h2>
   <input type="email" id="email" placeholder="Email"><br>
   <input type="password" id="password" placeholder="密碼"><br>
@@ -21,12 +19,8 @@
   <h3>QR Code 結果：</h3>
   <canvas id="qrcode"></canvas>
 
-  <!-- qrcode.js -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
   <!-- Firebase SDKs -->
   <script type="module">
-    // 初始化 Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
     import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -52,46 +46,8 @@
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const uid = userCredential.user.uid;
 
-        // 存入資料庫
+        // 存入 Firestore
         await setDoc(doc(db, "users", uid), {
-          email: email,
-          createdAt: new Date()
-        });
-
-        // 產生 QR Code
-        QRCode.toCanvas(document.getElementById('qrcode'), `UserID: ${uid}`, function (error) {
-          if (error) console.error(error);
-          console.log("QR Code OK");
-        });
-
-        alert("註冊成功！");
-      } catch (err) {
-        alert("錯誤：" + err.message);
-      }
-    }
-  </script>
-</body>
-</html>
- <title>QR Code 測試</title>
-</head>
-<body>
-  <h3>QR Code 結果：</h3>
-  <canvas id="qrcode"></canvas>
-
-  <!-- qrcode.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-
-  <script>
-    // 測試產生 QR Code
-    QRCode.toCanvas(document.getElementById('qrcode'), '這是 QR Code 的內容', function (error) {
-      if (error) {
-        console.error(error);
-      } else {
-        console.log('QR Code 成功產生！');
-      }
-    });
-  </script>
-</body>
-</html>
+          email
 
 
